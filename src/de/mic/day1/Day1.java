@@ -6,12 +6,12 @@ import java.util.List;
 
 import de.mic.framework.Solver;
 
-public class Solve extends Solver {
+public class Day1 extends Solver {
 
 	public static void main(String[] args) {
 
-		new Solve().solve("day1-test.txt").print();
-		new Solve().solve("day1.txt").print();
+		new Day1().solve("day1-test.txt").print();
+		new Day1().solve("day1.txt").print();
 	}
 
 	@Override
