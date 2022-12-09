@@ -4,16 +4,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import de.mic.framework.FileIo;
+import de.mic.framework.Solver;
 
-public class Solve {
-
-	String soltion;
-	String filename;
-
-	void print() {
-		System.out.println(soltion);
-	}
+public class Solve extends Solver {
 
 	public static void main(String[] args) {
 
@@ -21,14 +14,14 @@ public class Solve {
 		new Solve().solve("day1.txt").print();
 	}
 
-	private Solve solve(String filename) {
-		this.filename = filename;
+	@Override
+	protected String solve() {
 		List<Elve> elves = new ArrayList<>();
-		List<String> rows = new FileIo().rows(filename);
 
+		;
 		Elve firstElve = new Elve();
 		elves.add(firstElve);
-		rows.stream().forEach(row -> {
+		this.file.rows().stream().forEach(row -> {
 			if (row.isBlank()) {
 				// next elve
 				elves.add(new Elve());
@@ -50,7 +43,7 @@ public class Solve {
 		System.out.println("3: " + elve3.getCalories());
 		elves.remove(elve3);
 		Integer result = elve.getCalories() + elve2.getCalories() + elve3.getCalories();
-		this.soltion = "" + result;
-		return this;
+		return "" + result;
 	}
+
 }

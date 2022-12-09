@@ -10,11 +10,17 @@ import java.util.stream.Stream;
 public class FileIo {
 
 	private static final String FOLDER = "Files";
+	private String filename;
+
+	public FileIo(String filename) {
+		this.filename = filename;
+
+	}
 
 	public static void main(String[] args) throws IOException {
 
 		String testFile = "day1.txt";
-		Stream<String[]> readAllLines = new FileIo().rowsEveryChar(testFile);
+		Stream<String[]> readAllLines = new FileIo(testFile).rowsEveryChar(testFile);
 		readAllLines.forEach(s -> System.out.println(s[0]));
 
 	}
@@ -31,19 +37,35 @@ public class FileIo {
 		}
 	}
 
-	public List<String> rows(String filename) {
+	public List<String> rows() {
+		return rows(this.filename);
+	}
+
+	List<String> rows(String filename) {
 		return loadFile(filename);
 	}
 
-	public Stream<String[]> rowsCommaSplitted(String filename) {
+	public Stream<String[]> rowsCommaSplitted() {
+		return rowsCommaSplitted(filename);
+	}
+
+	Stream<String[]> rowsCommaSplitted(String filename) {
 		return splitWith(filename, ",");
 	}
 
-	public Stream<String[]> rowsBlankSplitted(String filename) {
+	public Stream<String[]> rowsBlankSplitted() {
+		return rowsBlankSplitted(filename);
+	}
+
+	Stream<String[]> rowsBlankSplitted(String filename) {
 		return splitWith(filename, " ");
 	}
 
-	public Stream<String[]> rowsEveryChar(String filename) {
+	public Stream<String[]> rowsEveryChar() {
+		return rowsEveryChar(filename);
+	}
+
+	Stream<String[]> rowsEveryChar(String filename) {
 		return splitWith(filename, "");
 
 	}
