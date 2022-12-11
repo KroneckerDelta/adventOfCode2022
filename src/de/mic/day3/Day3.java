@@ -2,16 +2,14 @@ package de.mic.day3;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import de.mic.framework.Solver;
 
 public class Day3 extends Solver {
 
 	public static void main(String[] args) {
-
-		System.out.println("" + getPosBig('A'));
-		System.out.println("" + getPosBig('M'));
-		System.out.println("" + getPosBig('Z'));
 
 		new Day3().solve("Day3-test.txt").print();
 		new Day3().solve("Day3.txt").print();
@@ -40,10 +38,43 @@ public class Day3 extends Solver {
 	@Override
 	protected String solve() {
 		List<String> rows = this.file.rows();
-		List<Character> collect = rows.stream().map(m -> splitAndFindChar(m)).collect(Collectors.toList());
-		System.out.println(collect);
-		Integer sum = collect.stream().map(c -> getPos(c)).collect(Collectors.summingInt(Integer::intValue));
+
+		Stream<List<String>> chunks = batches(rows, 3);
+		Integer sum = chunks.map(myList -> findChars(myList))//
+				.map(c -> getPos(c))//
+				.collect(Collectors.summingInt(Integer::intValue));
+
+//		rows.stream().collect(Collectors.partitioningBy(pre, coll));
+//		System.out.println(collect);
+//		Integer sum = collect.stream().map(c -> getPos(c)).collect(Collectors.summingInt(Integer::intValue));
 		return "" + sum;
+	}
+
+	private Character findChars(List<String> myList) {
+
+		String one = myList.get(0);
+		String two = myList.get(1);
+		String three = myList.get(2);
+
+		char[] charArray = one.toCharArray();
+		for (char c : charArray) {
+			if (two.contains(String.valueOf(c)) && three.contains(String.valueOf(c))) {
+				return c;
+			}
+
+		}
+		throw new RuntimeException("Some Error");
+	}
+
+	public static <T> Stream<List<T>> batches(List<T> source, int length) {
+		if (length <= 0)
+			throw new IllegalArgumentException("length = " + length);
+		int size = source.size();
+		if (size <= 0)
+			return Stream.empty();
+		int fullChunks = (size - 1) / length;
+		return IntStream.range(0, fullChunks + 1)
+				.mapToObj(n -> source.subList(n * length, n == fullChunks ? size : (n + 1) * length));
 	}
 
 	private Character splitAndFindChar(String row) {
