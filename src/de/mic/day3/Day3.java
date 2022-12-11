@@ -29,13 +29,11 @@ public class Day3 extends Solver {
 
 	static int getPosSmall(char c) {
 		int i = c - 'a' + 1;
-		System.out.println(i);
 		return i;
 	}
 
 	static int getPosBig(char c) {
 		int i = c - 'A' + 1 + 26;
-		System.out.println(i);
 		return i;
 	}
 
