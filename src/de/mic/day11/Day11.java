@@ -1,5 +1,6 @@
 package de.mic.day11;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,14 +38,14 @@ public class Day11 extends Solver {
 			round.next();
 			System.out.println("Round: " + i);
 		}
-		List<Integer> collect = monkeys.stream().map(m -> m.inspect).sorted((o1, o2) -> o1.compareTo(o2))
+		List<BigInteger> collect = monkeys.stream().map(m -> m.inspect).sorted((o1, o2) -> o1.compareTo(o2))
 				.collect(Collectors.toList());
 
 		System.out.println("1 " + collect.get(0));
 		System.out.println("2 " + collect.get(1));
 		System.out.println("3 " + collect.get(2));
 		System.out.println("4 " + collect.get(3));
-		Integer result = collect.get(collect.size() - 1) * collect.get(collect.size() - 2);
+		BigInteger result = collect.get(collect.size() - 1).multiply(collect.get(collect.size() - 2));
 		return "" + result;
 	}
 

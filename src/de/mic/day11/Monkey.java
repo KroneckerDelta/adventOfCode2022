@@ -1,5 +1,6 @@
 package de.mic.day11;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Monkey {
 	String math;
 	String operationValue;
 
-	public Integer inspect = 0;
+	public BigInteger inspect = new BigInteger("0");
 
 	public Monkey(String id) {
 		String[] split = id.split(" ");
@@ -110,7 +111,7 @@ public class Monkey {
 	}
 
 	public Integer inspect(Integer item) {
-		inspect++;
+		inspect = inspect.add(BigInteger.ONE);
 		return newValue(item) / 3;
 	}
 
