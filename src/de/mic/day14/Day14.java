@@ -3,6 +3,7 @@ package de.mic.day14;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.Collectors;
@@ -35,9 +36,10 @@ public class Day14 extends Solver {
 				.map(s -> createPoint(s.split(",")))//
 				.collect(Collectors.toList());
 
-		List<Point> filleDstones = fillStones(stones);
+		stones.addAll(new HashSet<>(fillStones(stones)));
 		printRiddle(stones);
-		System.out.println(filleDstones);
+		System.out.println("=======================");
+		printRiddle(stones);
 
 //		Stream<List<String>> map2 = map.map(r -> Arrays.asList(r));
 //		Stream<Stream<String[]>> map3 = map2.map(r -> r.stream().map(s -> s.split(",")));
@@ -55,17 +57,22 @@ public class Day14 extends Solver {
 		OptionalInt minX = stones.stream().mapToInt(p -> p.x).min();
 		OptionalInt maxX = stones.stream().mapToInt(p -> p.x).max();
 
-		for (int i = minY.getAsInt(); i < maxY.getAsInt(); i++) {
+		for (int i = 0; i <= maxY.getAsInt(); i++) {
 			final int ii = i;
 			List<Point> toPrint = stones.stream().filter(p -> p.y == ii).collect(Collectors.toList());
-			for (int x = minX.getAsInt(); x < maxX.getAsInt(); x++) {
+			for (int x = minX.getAsInt(); x <= maxX.getAsInt(); x++) {
+				Point toDraw = null;
 				for (Point point : toPrint) {
 					if (point.x == x) {
-						System.out.print("_");
-					} else {
-						System.out.print("#");
+						toDraw = point;
 					}
 				}
+				if (toDraw == null) {
+					System.out.print("_");
+				} else {
+					System.out.print("#");
+				}
+				toDraw = null;
 			}
 			System.out.println();
 		}
