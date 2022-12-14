@@ -25,6 +25,7 @@ public class Monkey {
 	String operationValue;
 
 	public BigInteger inspect = new BigInteger("0");
+	public Integer missingValue;
 
 	public Monkey(String id) {
 		String[] split = id.split(" ");
@@ -112,7 +113,7 @@ public class Monkey {
 
 	public Integer inspect(Integer item) {
 		inspect = inspect.add(BigInteger.ONE);
-		return newValue(item) / 3;
+		return newValue(item);
 	}
 
 	public Integer sendTo(Integer value) {

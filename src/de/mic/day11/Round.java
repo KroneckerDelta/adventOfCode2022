@@ -27,10 +27,10 @@ public class Round {
 			monkey.remove(items);
 
 		}
-		System.out.println("Monkey: " + monkeys.get(0));
-		System.out.println("Monkey: " + monkeys.get(1));
-		System.out.println("Monkey: " + monkeys.get(2));
-		System.out.println("Monkey: " + monkeys.get(3));
+//		System.out.println("Monkey: " + monkeys.get(0));
+//		System.out.println("Monkey: " + monkeys.get(1));
+//		System.out.println("Monkey: " + monkeys.get(2));
+//		System.out.println("Monkey: " + monkeys.get(3));
 	}
 
 	private void addToMonkey(Integer newValue, Integer sendTo) {

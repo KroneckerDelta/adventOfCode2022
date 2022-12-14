@@ -18,6 +18,7 @@ public class Day11 extends Solver {
 
 	@Override
 	protected String solve() {
+		BigInteger result = new BigInteger("0");
 
 		List<String> rows = this.file.rows();
 		Iterator<String> iterator = rows.iterator();
@@ -25,31 +26,39 @@ public class Day11 extends Solver {
 		List<Monkey> monkeys = new ArrayList<>();
 		while (iterator.hasNext()) {
 
-			buildMonkey(iterator, monkeys);
+			buildMonkey(iterator, monkeys, 3);
 		}
 
-		System.out.println("Monkey: " + monkeys.get(0));
-		System.out.println("Monkey: " + monkeys.get(1));
-		System.out.println("Monkey: " + monkeys.get(2));
-		System.out.println("Monkey: " + monkeys.get(3));
+//			System.out.println("Monkey: " + monkeys.get(0));
+//			System.out.println("Monkey: " + monkeys.get(1));
+//			System.out.println("Monkey: " + monkeys.get(2));
+//			System.out.println("Monkey: " + monkeys.get(3));
 
 		Round round = new Round(monkeys);
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 10000; i++) {
 			round.next();
 			System.out.println("Round: " + i);
 		}
 		List<BigInteger> collect = monkeys.stream().map(m -> m.inspect).sorted((o1, o2) -> o1.compareTo(o2))
 				.collect(Collectors.toList());
 
+		if (collect.get(0).equals(new BigInteger("52166")) && collect.get(1).equals(new BigInteger("47830"))) {
+
+			System.out.println("Gefunden! " + 3);
+			System.out.println("1 " + collect.get(0));
+			System.out.println("2 " + collect.get(1));
+			System.out.println("3 " + collect.get(2));
+			System.out.println("4 " + collect.get(3));
+		}
 		System.out.println("1 " + collect.get(0));
 		System.out.println("2 " + collect.get(1));
 		System.out.println("3 " + collect.get(2));
 		System.out.println("4 " + collect.get(3));
-		BigInteger result = collect.get(collect.size() - 1).multiply(collect.get(collect.size() - 2));
-		return "" + result;
+		result = collect.get(collect.size() - 1).multiply(collect.get(collect.size() - 2));
+		return "" + result.toString();
 	}
 
-	private void buildMonkey(Iterator<String> iterator, List<Monkey> monkeys) {
+	private void buildMonkey(Iterator<String> iterator, List<Monkey> monkeys, int missingFactor) {
 		String id = iterator.next();
 		String items = iterator.next();
 		String operations = iterator.next();
@@ -68,7 +77,11 @@ public class Day11 extends Solver {
 		monkey.addTestOperator(testOperator);
 		monkey.addIfTrue(ifTrue);
 		monkey.addIfFalse(ifFalse);
+
+		monkey.missingValue = 9699690;
+
 		monkeys.add(monkey);
+
 	}
 
 }

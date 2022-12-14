@@ -1,0 +1,5 @@
+== After round 10000 ==
+Monkey 0 inspected items 52166 times.
+Monkey 1 inspected items 47830 times.
+Monkey 2 inspected items 1938 times.
+Monkey 3 inspected items 52013 times.
