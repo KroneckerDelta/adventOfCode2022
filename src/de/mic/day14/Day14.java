@@ -14,6 +14,7 @@ public class Day14 extends Solver {
 
 	public static void main(String[] args) {
 		new Day14().solve("day14-text.txt").print();
+//		new Day14().solve("day14.txt").print();
 
 	}
 
@@ -36,20 +37,41 @@ public class Day14 extends Solver {
 				.map(s -> createPoint(s.split(",")))//
 				.collect(Collectors.toList());
 
-		stones.addAll(new HashSet<>(fillStones(stones)));
 		printRiddle(stones);
+		stones.addAll(new HashSet<>(fillStones(stones)));
+		stones.add(new Point(500, 3));
+		stones.add(new Point(499, 3));
+		stones.add(new Point(498, 2));
+		stones.add(new Point(498, 3));
+//		printRiddle(stones);
 		System.out.println("=======================");
 		printRiddle(stones);
 
-		fillSand(stones, new Point(500, 0));
+		List<Point> before = new ArrayList<>(stones);
+
+		for (int i = 0; i < 30; i++) {
+//		while (true) {
+
+			try {
+
+				fillSand(stones, new Point(500, 0));
+			} catch (Exception e) {
+				break;
+			}
+//		}
+		}
 
 //		Stream<List<String>> map2 = map.map(r -> Arrays.asList(r));
 //		Stream<Stream<String[]>> map3 = map2.map(r -> r.stream().map(s -> s.split(",")));
 //		List<Stream<String[]>> collect = map3.collect(Collectors.toList());
 		//
-//				.collect(Collectors.toList()));
-
-		return "0";
+//				.collex	ct(Collectors.toList()));
+		stones.removeAll(before);
+		System.out.println("== init ==");
+		printRiddle(stones);
+		System.out.println("== before==");
+		printRiddle(before);
+		return "" + stones.size();
 	}
 
 	private boolean fillSand(List<Point> stones, Point point) {
@@ -60,7 +82,7 @@ public class Day14 extends Solver {
 		int maxX = stones.stream().mapToInt(p -> p.x).max().getAsInt();
 
 		if (point.x <= minX || point.x >= maxX || point.y <= minY - 1 || point.y >= maxY) {
-			return false;
+			return true;
 		}
 
 		// prüfe nächsten platz
@@ -70,31 +92,39 @@ public class Day14 extends Solver {
 		Point checker = new Point(point.x, point.y + 1);
 		printRiddle(stones, point);
 
-		boolean isFull = stones.stream().anyMatch(p -> p == checker);
+		boolean isFull = contains(stones, checker);
 		if (!isFull) {
 			if (fillSand(stones, checker)) {
-				System.out.println("rausJa: " + checker);
+//				System.out.println("Size: " + stones.size());
 			} else {
-				stones.add(point);
-				System.out.println("Nein: " + checker);
+
+				if ((point.x <= minX || point.x >= maxX || point.y <= minY - 1 || point.y >= maxY)) {
+					System.out.println("STop!");
+					throw new RuntimeException();
+				} else {
+
+					stones.add(point);
+//					System.out.println("Nein: " + checker);
+				}
+
 			}
 		} else {
-
+//			System.out.println("Recht lInkss");
 			// prüfe links und unten
 
 			final Point checkerLeft = new Point(point.x - 1, point.y);
-			boolean anyMatchLeft = stones.stream().anyMatch(p -> p == checkerLeft);
+			boolean anyMatchLeft = false; // contains(stones, checkerLeft);
 			final Point checkerLeftDown = new Point(checkerLeft.x, checkerLeft.y + 1);
-			boolean anyMatchLeftDown = stones.stream().anyMatch(p -> p == checkerLeftDown);
+			boolean anyMatchLeftDown = contains(stones, checkerLeftDown);
 
 			if (!anyMatchLeft && !anyMatchLeftDown) {
 				return fillSand(stones, checkerLeftDown);
 			}
 			// prüfe rechts und unten
 			final Point checkerRight = new Point(point.x + 1, point.y);
-			boolean anyMatchRight = stones.stream().anyMatch(p -> p == checkerRight);
+			boolean anyMatchRight = false;// contains(stones, checkerRight);
 			final Point checkerRihgtDown = new Point(checkerRight.x, checkerLeft.y + 1);
-			boolean anyMatchRightDown = stones.stream().anyMatch(p -> p == checkerRihgtDown);
+			boolean anyMatchRightDown = contains(stones, checkerRihgtDown);
 
 			if (!anyMatchRight && !anyMatchRightDown) {
 				return fillSand(stones, checkerRihgtDown);
@@ -110,22 +140,27 @@ public class Day14 extends Solver {
 
 	}
 
+	private boolean contains(List<Point> stones, final Point checkerLeft) {
+		return stones.stream().anyMatch(p -> p.equals(checkerLeft));
+	}
+
 	private void printRiddle(List<Point> stones) {
 		printRiddle(stones, new Point(500, 0));
 	}
 
 	private void printRiddle(List<Point> stones, Point trace) {
 
+		ArrayList<Point> toPrint2 = new ArrayList<>(stones);
 		System.out.println("================");
 
-		OptionalInt minY = stones.stream().mapToInt(p -> p.y).min();
-		OptionalInt maxY = stones.stream().mapToInt(p -> p.y).max();
-		OptionalInt minX = stones.stream().mapToInt(p -> p.x).min();
-		OptionalInt maxX = stones.stream().mapToInt(p -> p.x).max();
-		stones.add(trace);
+		OptionalInt minY = toPrint2.stream().mapToInt(p -> p.y).min();
+		OptionalInt maxY = toPrint2.stream().mapToInt(p -> p.y).max();
+		OptionalInt minX = toPrint2.stream().mapToInt(p -> p.x).min();
+		OptionalInt maxX = toPrint2.stream().mapToInt(p -> p.x).max();
+		toPrint2.add(trace);
 		for (int i = 0; i <= maxY.getAsInt(); i++) {
 			final int ii = i;
-			List<Point> toPrint = stones.stream().filter(p -> p.y == ii).collect(Collectors.toList());
+			List<Point> toPrint = toPrint2.stream().filter(p -> p.y == ii).collect(Collectors.toList());
 			for (int x = minX.getAsInt(); x <= maxX.getAsInt(); x++) {
 				Point toDraw = null;
 				for (Point point : toPrint) {
@@ -134,7 +169,7 @@ public class Day14 extends Solver {
 					}
 				}
 				if (toDraw == null) {
-					System.out.print("_");
+					System.out.print(".");
 				} else {
 					System.out.print("#");
 				}
@@ -142,7 +177,7 @@ public class Day14 extends Solver {
 			}
 			System.out.println();
 		}
-		stones.remove(trace);
+		toPrint2.remove(trace);
 	}
 
 	private List<Point> fillStones(List<Point> stones) {
