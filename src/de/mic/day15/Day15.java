@@ -14,8 +14,8 @@ import de.mic.framework.Solver;
 public class Day15 extends Solver {
 	public static void main(String[] args) {
 		long start = System.currentTimeMillis();
-//		new Day15().solve("day15-test.txt").print();
-		new Day15().solve("day15.txt").print();
+		new Day15().solve("day15-test.txt").print();
+//		new Day15().solve("day15.txt").print();
 		long stop = System.currentTimeMillis() - start;
 		System.out.println("Time in ms: " + stop);
 	}
@@ -38,8 +38,37 @@ public class Day15 extends Solver {
 		;
 		int startX = Math.min(findStart(beacon), all.stream().mapToInt(s -> s.getBounds().x).min().getAsInt());
 		int endX = Math.max(findMax(beacon), all.stream().mapToInt(s -> s.getBounds().x).max().getAsInt());
-		int y = 2000000;
+
+		int y = 10;
 		int count = 0;
+
+		count = backupPartI(all, beacon, startX, endX, y, count);
+
+		int count2 = 0;
+//		count2 = backupPartI(all, beacon, startX, endX, y, count2);
+
+		return "intersect> : " + count + " zu contains: " + count2;
+	}
+
+	private int backupPartI(List<Shape> all, Set<Point> beacon, int startX, int endX, int y, int count2) {
+		for (int x = startX; x <= endX + 1; x++) {
+			Point point = new Point(x, y);
+			boolean found = false;
+			for (Shape rec : all) {
+				if (rec.intersects(point.x, point.y, 1, 1)) {
+//				if (rec.contains(point)) {
+					found = true;
+				}
+			}
+
+			if (!found) {
+				System.out.println("not Found: " + point);
+			}
+		}
+		return count2;
+	}
+
+	private int partI(List<Shape> all, Set<Point> beacon, int startX, int endX, int y, int count) {
 		for (int x = startX; x <= endX + 1; x++) {
 			Point point = new Point(x, y);
 			boolean found = false;
@@ -69,38 +98,7 @@ public class Day15 extends Solver {
 				}
 			}
 		}
-		int count2 = 0;
-		for (int x = startX; x <= endX + 1; x++) {
-			Point point = new Point(x, y);
-			boolean found = false;
-			for (Shape rec : all) {
-
-//				if (rec.intersects(point.x, point.y, 1, 1)) {
-				if (rec.contains(point)) {
-					// is in
-					if (!found) {
-
-//						System.out.println("drin: " + point);
-						count2++;
-						found = true;
-					} else {
-//						System.out.println("2x drin: " + point);
-					}
-				} else {
-					// not in
-//					System.out.println("nicht drin: " + point);
-
-				}
-			}
-			for (Point p : beacon) {
-				if (point.x == p.x && point.y == p.y) {
-					count2--;
-					System.out.println("Found Beacon");
-				}
-			}
-		}
-
-		return "intersect> : " + count + " zu contains: " + count2;
+		return count;
 	}
 
 	private int findMax(Set<Point> beacon) {
