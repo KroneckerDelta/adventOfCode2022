@@ -20,28 +20,4 @@ public class Vertex<T> {
 	@Exclude
 	List<Vertex<T>> neighbours = new ArrayList<>();
 
-	public T getData() {
-		return data;
-	}
-
-	public void setData(T data) {
-		this.data = data;
-	}
-
-	public boolean isVisited() {
-		return visited;
-	}
-
-	public void setVisited(boolean visited) {
-		this.visited = visited;
-	}
-
-	public List<Vertex<T>> getNeighbours() {
-		return neighbours;
-	}
-
-	public void setNeighbours(List<Vertex<T>> neighbours) {
-		this.neighbours = neighbours;
-	}
-
 }

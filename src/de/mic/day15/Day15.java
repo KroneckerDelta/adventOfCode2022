@@ -23,6 +23,9 @@ public class Day15 extends Solver {
 	@Override
 	protected String solve() {
 
+		for (int i = 0; i < 4000000; i++) {
+			System.out.println("i" + i);
+		}
 		List<String> rows = this.file.rows();
 		Iterator<String> iterator = rows.iterator();
 		List<Shape> all = new ArrayList<>();
@@ -39,7 +42,7 @@ public class Day15 extends Solver {
 		int startX = Math.min(findStart(beacon), all.stream().mapToInt(s -> s.getBounds().x).min().getAsInt());
 		int endX = Math.max(findMax(beacon), all.stream().mapToInt(s -> s.getBounds().x).max().getAsInt());
 
-		int y = 10;
+		int y = 11;
 		int count = 0;
 
 		count = backupPartI(all, beacon, startX, endX, y, count);
@@ -55,8 +58,8 @@ public class Day15 extends Solver {
 			Point point = new Point(x, y);
 			boolean found = false;
 			for (Shape rec : all) {
-				if (rec.intersects(point.x, point.y, 1, 1)) {
-//				if (rec.contains(point)) {
+//				if (rec.intersects(point.x, point.y, 1, 1)) {
+				if (rec.contains(point)) {
 					found = true;
 				}
 			}

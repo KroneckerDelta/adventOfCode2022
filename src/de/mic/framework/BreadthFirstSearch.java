@@ -12,17 +12,29 @@ public class BreadthFirstSearch<T> {
 		this.startVertex = startVertex;
 	}
 
-	public void traverse() {
+	public int traverse(Vertex<T> searchFor) {
 
 		Queue<Vertex<T>> queue = new LinkedList<>();
 		queue.add(startVertex);
-
+		int countSteps = 0;
 		while (!queue.isEmpty()) {
 			Vertex<T> current = queue.poll();
-			current.setVisited(true);
-			System.out.println();
-			queue.addAll(current.getNeighbours());
+			if (!current.isVisited()) {
+
+				if (searchFor.equals(current)) {
+					System.out.println("Gefunden!!");
+
+//					return countSteps;
+					countSteps++;
+				}
+
+				current.setVisited(true);
+				System.out.println("current: " + current);
+				queue.addAll(current.getNeighbours());
+				System.out.println();
+			}
 		}
+		return countSteps;
 	}
 
 }
