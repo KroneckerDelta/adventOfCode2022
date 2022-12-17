@@ -1,7 +1,8 @@
-package de.mic.day4;
+package de.mic.day5;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import de.mic.framework.Solver;
 
@@ -14,11 +15,17 @@ public class Day5 extends Solver {
 
 	private List<Order> order = new ArrayList<>();
 
+	private List<Stack<Character>> stack = new ArrayList<>();
+
 	@Override
 	protected String solve() {
+		for (int i = 0; i < 10; i++) {
+			stack.add(new Stack<Character>());
+		}
+
 		this.file.rows().stream().forEach(row -> parse(row));
 
-		return "" + this.order.size();
+		return "" + this.order.size() + " stack 1: " + stack.get(2).size();
 	}
 
 	private Object parse(String row) {
@@ -57,7 +64,11 @@ public class Day5 extends Solver {
 
 	private void createStack(int stack, char input) {
 		System.out.println("Stack: " + stack + " input " + input);
-
+		if (this.stack.get(stack) == null) {
+			Stack<Character> s = new Stack<>();
+			this.stack.add(s);
+		}
+		this.stack.get(stack).push(input);
 	}
 
 	private Order createOrder(String sum, String from, String to) {

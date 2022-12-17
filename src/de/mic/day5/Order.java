@@ -1,4 +1,4 @@
-package de.mic.day4;
+package de.mic.day5;
 
 import lombok.Data;
 
