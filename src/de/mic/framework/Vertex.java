@@ -18,6 +18,7 @@ public class Vertex<T> {
 	}
 
 	@Exclude
+	@lombok.EqualsAndHashCode.Exclude
 	List<Vertex<T>> neighbours = new ArrayList<>();
 
 }
