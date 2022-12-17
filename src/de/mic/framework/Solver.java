@@ -14,6 +14,7 @@ public abstract class Solver {
 		this.filename = filename;
 		this.file = new FileIo(filename);
 		this.solution = solve();
+		print();
 		return this;
 	}
 
