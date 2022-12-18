@@ -2,7 +2,6 @@ package de.mic.day5;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import de.mic.framework.Solver;
 
@@ -10,22 +9,63 @@ public class Day5 extends Solver {
 
 	public static void main(String[] args) {
 		new Day5().solve("day5-test.txt");
+		new Day5().solve("day5.txt");
 
 	}
 
 	private List<Order> order = new ArrayList<>();
 
-	private List<Stack<Character>> stack = new ArrayList<>();
+	private List<List<Character>> stacks = new ArrayList<>();
 
 	@Override
 	protected String solve() {
 		for (int i = 0; i < 10; i++) {
-			stack.add(new Stack<Character>());
+			stacks.add(new ArrayList<Character>());
 		}
 
 		this.file.rows().stream().forEach(row -> parse(row));
 
-		return "" + this.order.size() + " stack 1: " + stack.get(2).size();
+		for (int i = 0; i < 10; i++) {
+			List<Character> stack = stacks.get(i);
+//			Collections.reverse(stack);
+		}
+
+		runOrder();
+		String result = "";
+		for (int i = 0; i < 10; i++) {
+			if (!this.stacks.get(i).isEmpty()) {
+				Character pop = this.stacks.get(i).get(0);
+				result += pop.charValue();
+			}
+		}
+		return result;
+	}
+
+	private void runOrder() {
+		for (Order order : order) {
+			System.out.println("Before Order " + order);
+			List<Character> from = this.stacks.get(order.getFrom());
+			List<Character> to = this.stacks.get(order.getTo());
+
+			System.out.println("from" + from);
+			System.out.println("to" + to);
+			List<Character> tmp = new ArrayList<>();
+			for (int i = 0; i < order.getSum(); i++) {
+
+				Character pop = from.remove(0);
+//				from.remove(pop);
+				System.out.println("[" + pop + "]");
+				tmp.add(0, pop);
+			}
+			for (Character pop : tmp) {
+				to.add(0, pop);
+
+			}
+			System.out.println("After");
+			System.out.println("from" + from);
+			System.out.println("to" + to);
+		}
+
 	}
 
 	private Object parse(String row) {
@@ -64,11 +104,7 @@ public class Day5 extends Solver {
 
 	private void createStack(int stack, char input) {
 		System.out.println("Stack: " + stack + " input " + input);
-		if (this.stack.get(stack) == null) {
-			Stack<Character> s = new Stack<>();
-			this.stack.add(s);
-		}
-		this.stack.get(stack).push(input);
+		this.stacks.get(stack).add(input);
 	}
 
 	private Order createOrder(String sum, String from, String to) {
