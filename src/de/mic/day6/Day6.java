@@ -27,24 +27,15 @@ public class Day6 extends Solver {
 			List<Character> backup = new ArrayList<>();
 			for (int i = 1; i < charArray.length - 4; i++) {
 
-				char a = charArray[i];
-				char b = charArray[i + 1];
-				char c = charArray[i + 2];
-				char d = charArray[i + 3];
+				for (int k = 0; k < 14; k++) {
+					char a = charArray[i + k];
+					backup.add(a);
+					mySet.add(a);
 
-				backup.add(a);
-				backup.add(b);
-				backup.add(c);
-				backup.add(d);
-				mySet.add(a);
-				mySet.add(b);
-				mySet.add(c);
-				mySet.add(d);
-//				
-
+				}
 //				if (backup.size() == 4) {
 				if (backup.size() == mySet.size()) {
-					return i + 4;
+					return i + 14;
 				} else {
 					mySet.clear();
 					backup.clear();
